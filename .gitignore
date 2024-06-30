@@ -19,3 +19,5 @@ target/
 .devcontainer/.env
 
 .github/
+
+_command
