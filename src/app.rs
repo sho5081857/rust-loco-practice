@@ -54,10 +54,11 @@ impl Hooks for App {
             .add_route(controllers::articles::routes())
             .add_route(controllers::guide::routes())
             .add_route(controllers::post::routes())
-            .add_route(controllers::notes::routes())
+            // .add_route(controllers::notes::routes())
             .add_route(controllers::auth::routes())
             .add_route(controllers::user::routes())
             .add_route(controllers::home::routes())
+            .add_route(controllers::notes::routes())
     }
 
     fn connect_workers<'a>(p: &'a mut Processor, ctx: &'a AppContext) {
