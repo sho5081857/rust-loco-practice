@@ -1,30 +1,42 @@
-# React + TypeScript + Vite
+# SaaS Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Batteries included
 
-Currently, two official plugins are available:
+- [TypeScript](https://www.typescriptlang.org/): A typed superset of JavaScript
+- [Rsbuild](https://rsbuild.dev/): A Rust-based web build tool
+- [Biome](https://biomejs.dev/): A Rust-based formatter and sensible linter for the web
+- [React](https://reactjs.org/): A JavaScript library for building user interfaces
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+If you don't like React for some reason, Rsbuild makes it easy to replace it with something else!
 
-## Expanding the ESLint configuration
+# Development
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+To get started with the development of the SaaS frontend, follow these steps:
 
-- Configure the top-level `parserOptions` property like this:
+### 1. Install Packages
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+Use the following command to install the required packages using pnpm:
+
+```sh
+pnpm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 2. Run in Development Mode
+
+Once the packages are installed, run your frontend application in development mode with the following command:
+
+```sh
+pnpm dev
+```
+
+This will start the development frontend server serving via vit
+
+### 3. Build The application
+
+To build your application run the following command:
+
+```sh
+pnpm build
+```
+
+After the build `dist` folder is ready to served by loco. run loco `cargo loco start` and the frontend application will served via Loco

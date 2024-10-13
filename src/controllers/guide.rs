@@ -1,22 +1,16 @@
+#![allow(clippy::missing_errors_doc)]
+#![allow(clippy::unnecessary_struct_initialization)]
 #![allow(clippy::unused_async)]
 use loco_rs::prelude::*;
 use axum::debug_handler;
 
-
 #[debug_handler]
-pub async fn echo(req_body: String) -> String {
-    req_body
-}
-
-#[debug_handler]
-pub async fn hello(State(_ctx): State<AppContext>) -> Result<Response> {
-    // do something with context (database, etc)
-    format::text("hello")
+pub async fn index(State(_ctx): State<AppContext>) -> Result<Response> {
+    format::empty()
 }
 
 pub fn routes() -> Routes {
     Routes::new()
-        .prefix("guide")
-        .add("/", get(hello))
-        .add("/echo", post(echo))
+        .prefix("guides/")
+        .add("/", get(index))
 }
