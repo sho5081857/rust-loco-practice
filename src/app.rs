@@ -3,12 +3,12 @@ use std::path::Path;
 use async_trait::async_trait;
 use loco_rs::{
     app::{AppContext, Hooks, Initializer},
+    bgworker::{BackgroundWorker, Queue},
     boot::{create_app, BootResult, StartMode},
     controller::AppRoutes,
     db::{self, truncate_table},
     environment::Environment,
     task::Tasks,
-    worker::{AppWorker, Processor},
     Result,
 };
 use migration::Migrator;
@@ -50,19 +50,15 @@ impl Hooks for App {
 
     fn routes(_ctx: &AppContext) -> AppRoutes {
         AppRoutes::with_default_routes()
-            .add_route(controllers::comment::routes())
-            .add_route(controllers::articles::routes())
             .add_route(controllers::guide::routes())
-            .add_route(controllers::post::routes())
-            // .add_route(controllers::notes::routes())
+            .add_route(controllers::notes::routes())
             .add_route(controllers::auth::routes())
             .add_route(controllers::user::routes())
-            .add_route(controllers::home::routes())
-            .add_route(controllers::notes::routes())
     }
 
-    fn connect_workers<'a>(p: &'a mut Processor, ctx: &'a AppContext) {
-        p.register(DownloadWorker::build(ctx));
+    async fn connect_workers(ctx: &AppContext, queue: &Queue) -> Result<()> {
+        queue.register(DownloadWorker::build(ctx)).await?;
+        Ok(())
     }
 
     fn register_tasks(tasks: &mut Tasks) {

@@ -23,7 +23,7 @@ pub struct RegisterParams {
 pub struct Validator {
     #[validate(length(min = 2, message = "Name must be at least 2 characters long."))]
     pub name: String,
-    #[validate(custom = "validation::is_valid_email")]
+    #[validate(custom(function = "validation::is_valid_email"))]
     pub email: String,
 }
 
@@ -111,7 +111,7 @@ impl super::_entities::users::Model {
         user.ok_or_else(|| ModelError::EntityNotFound)
     }
 
-    /// /// finds a user by the provided reset token
+    /// finds a user by the provided reset token
     ///
     /// # Errors
     ///
@@ -238,7 +238,7 @@ impl super::_entities::users::ActiveModel {
         mut self,
         db: &DatabaseConnection,
     ) -> ModelResult<Model> {
-        self.email_verification_sent_at = ActiveValue::set(Some(Local::now().naive_local()));
+        self.email_verification_sent_at = ActiveValue::set(Some(Local::now().into()));
         self.email_verification_token = ActiveValue::Set(Some(Uuid::new_v4().to_string()));
         Ok(self.update(db).await?)
     }
@@ -256,7 +256,7 @@ impl super::_entities::users::ActiveModel {
     ///
     /// when has DB query error
     pub async fn set_forgot_password_sent(mut self, db: &DatabaseConnection) -> ModelResult<Model> {
-        self.reset_sent_at = ActiveValue::set(Some(Local::now().naive_local()));
+        self.reset_sent_at = ActiveValue::set(Some(Local::now().into()));
         self.reset_token = ActiveValue::Set(Some(Uuid::new_v4().to_string()));
         Ok(self.update(db).await?)
     }
@@ -271,7 +271,7 @@ impl super::_entities::users::ActiveModel {
     ///
     /// when has DB query error
     pub async fn verified(mut self, db: &DatabaseConnection) -> ModelResult<Model> {
-        self.email_verified_at = ActiveValue::set(Some(Local::now().naive_local()));
+        self.email_verified_at = ActiveValue::set(Some(Local::now().into()));
         Ok(self.update(db).await?)
     }
 
@@ -280,6 +280,7 @@ impl super::_entities::users::ActiveModel {
     ///
     /// This method hashes the provided password and sets it as the new password
     /// for the user.
+    ///
     /// # Errors
     ///
     /// when has DB query error or could not hashed the given password

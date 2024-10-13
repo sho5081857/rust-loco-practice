@@ -16,52 +16,32 @@ services:
     image: postgres:15.3-alpine
     restart: unless-stopped
     ports:
-      - target: 5432
-        published: ${DB_PUBLISHED_PORT:-5432}
-        protocol: tcp
-        mode: host
+      - 5432:5432
     networks:
       - db
     volumes:
-      - type: volume
-        source: postgres-data
-        target: /var/lib/postgresql/data
-        volume:
-          nocopy: true
+      - postgres-data:/var/lib/postgresql/data
     env_file:
       - .env
-    # environment:
-    #   POSTGRES_DB: ${POSTGRES_DB:-postgres}
-    #   POSTGRES_USER: ${POSTGRES_USER:-postgres}
-    #   POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-    #   DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@localhost:5432/postgres}
   redis:
     image: redis:latest
     restart: unless-stopped
     ports:
-      - target: 6379
-        published: ${REDIS_PUBLISHED_PORT:-6379}
-        protocol: tcp
-        mode: host
+      - 6379:6379
     networks:
       - redis
   mailer:
     image: mailtutan/mailtutan:latest
     restart: unless-stopped
     ports:
-      - target: 1080
-        published: ${MAILER_PUBLISHED_WEB_PORT:-1080}
-        protocol: tcp
-        mode: host
-      - target: 1025
-        published: ${MAILER_PUBLISHED_LISTEN_PORT:-1025}
-        protocol: tcp
-        mode: host
+      - 1080:1080
+      - 1025:1025
     networks:
       - mailer
 
 volumes:
   postgres-data:
+
 
 networks:
   db:
